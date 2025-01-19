@@ -50,8 +50,8 @@ jobs:
               host: ${{ secrets.SSH_HOST }}
               username: ${{ secrets.SSH_USER }}
               key: ${{ secrets.SSH_PRIVATE_KEY }}
-              source: "deploy/docker-compose.yaml, deploy/deploy.sh"
-              target: "~/deploy/flutter-me"
+              source: "deploy/docker-compose.yaml, deploy/deploy.sh, .env"
+              target: "~/flutter-me"
         
           - name: Run Deployment Script
             uses: appleboy/ssh-action@v0.1.8
