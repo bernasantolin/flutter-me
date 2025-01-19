@@ -1,5 +1,4 @@
 name: Deploy
-
 on: 
   push:
     branches:
@@ -51,7 +50,7 @@ jobs:
               host: ${{ secrets.SSH_HOST }}
               username: ${{ secrets.SSH_USER }}
               key: ${{ secrets.SSH_PRIVATE_KEY }}
-              source: "docker-compose.yaml, deploy.sh"
+              source: "deploy/docker-compose.yaml, deploy/deploy.sh"
               target: "~/deploy/flutter-me"
         
           - name: Run Deployment Script
