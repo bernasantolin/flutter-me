@@ -5,8 +5,8 @@ on:
     branches:
       - main
 jobs: 
-  build-and-push:
-    runs-on: ubuntu-latest
+    build-and-push:
+      runs-on: ubuntu-latest
       steps:
         - name: Checkout
           uses: actions/checkout@v3
@@ -34,29 +34,29 @@ jobs:
             cache-from: type=register,ref=antolin0916/flutter-me:tagname
             cache-to: type=register,ref=antolin0916/flutter-me:tagname
 
-  deploy:
-    needs: [build-and-deploy]
-    runs-on: ubuntu-latest
+    deploy:
+      needs: [build-and-deploy]
+      runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout 
-        uses: actions/checkout@v3
+      steps:
+        - name: Checkout 
+          uses: actions/checkout@v3
 
-      - name: Copy Docker Compose & Script to Server
-        uses: appleboy/scp-action@v0.1.7
-        with: 
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "docker-compose.yaml, deploy.sh"
-          target: "~/deploy/flutter-me"
-     
-     -  name: Run Deployment Script
-        uses: appleboy/ssh-action@v0.1.8
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER}}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-          chmod +x ~/deploy/flutter-me/deploy.sh
-            ~/deploy/flutter-me/deploy.sh
+        - name: Copy Docker Compose & Script to Server
+          uses: appleboy/scp-action@v0.1.7
+          with: 
+            host: ${{ secrets.SSH_HOST }}
+            username: ${{ secrets.SSH_USER }}
+            key: ${{ secrets.SSH_PRIVATE_KEY }}
+            source: "docker-compose.yaml, deploy.sh"
+            target: "~/deploy/flutter-me"
+      
+        - name: Run Deployment Script
+          uses: appleboy/ssh-action@v0.1.8
+          with:
+            host: ${{ secrets.SSH_HOST }}
+            username: ${{ secrets.SSH_USER}}
+            key: ${{ secrets.SSH_PRIVATE_KEY }}
+            script: |
+              chmod +x ~/deploy/flutter-me/deploy.sh
+              ~/deploy/flutter-me/deploy.sh
