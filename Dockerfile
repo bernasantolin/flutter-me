@@ -1,20 +1,28 @@
+# Stage 1: Base stage with Node.js Alpine image
 FROM node:20-alpine AS builder
 
-WORKDIR /app
+# Set the working directory for subsequent instructions
+WORKDIR /builder
 
-COPY package.json package-lock.json ./
+# Copy dependencies files first
+COPY package.json package-lock.json ./ 
 
+# Install dependencies
 RUN npm install
 
+# Copy the rest of the application code
 COPY . .
 
+# Build the application
 RUN npm run build
 
+# Stage 2: Runner stage starts from the nginx:alpine image
 FROM nginx:alpine AS runner 
 
-# WORKDIR /usr/share/nginx/html
-WORKDIR /app
+# Set the working directory in the container
+WORKDIR /usr/share/nginx/html
 
+# Remove the default Nginx static assets
 RUN rm -rf ./*
 
 # Copy built artifacts from the builder stage
@@ -22,14 +30,17 @@ COPY --from=builder /app/.next /usr/share/nginx/html/.next
 COPY --from=builder /app/public /usr/share/nginx/html/public
 COPY --from=builder /app/package.json /usr/share/nginx/html/package.json
 
+# Copy the Nginx configuration file
+COPY nginx.conf /usr/nginx/nginx.conf
+
 # Install Node.js in the Nginx container to run the app
 RUN apk add --no-cache nodejs npm
 
 # Install necessary packages for running Next.js
-RUN npm install --prefix /app
+RUN npm install --prefix /usr/share/nginx/html
 
-COPY nginx.conf /usr/nginx/nginx.conf
+# Expose ports
+EXPOSE 80 4000
 
-EXPOSE 4000
-
-CMD ["npm", "start"]
+# Start both Nginx and the Next.js app
+CMD ["/bin/sh", "-c", "npm start --prefix /usr/share/nginx/html & nginx -g 'daemon off;'"]
