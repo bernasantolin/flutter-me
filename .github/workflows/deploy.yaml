@@ -31,8 +31,8 @@ jobs:
               context: .
               push: true
               tags: antolin0916/flutter-me:tagname
-              cache-from: type=register,ref=antolin0916/flutter-me:tagname
-              cache-to: type=register,ref=antolin0916/flutter-me:tagname
+              cache-from: type=registry,ref=antolin0916/ai-vid-gen:cache
+              cache-to: type=registry,ref=antolin0916/ai-vid-gen:cache,mode=max
 
       deploy:
         needs: [build-and-push]
