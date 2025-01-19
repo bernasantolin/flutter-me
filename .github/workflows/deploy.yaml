@@ -35,7 +35,7 @@ jobs:
               cache-to: type=register,ref=antolin0916/flutter-me:tagname
 
       deploy:
-        needs: [build-and-deploy]
+        needs: [build-and-push]
         runs-on: ubuntu-latest
 
         steps:
