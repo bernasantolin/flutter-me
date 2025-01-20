@@ -60,5 +60,5 @@ jobs:
               username: ${{ secrets.SSH_USER}}
               key: ${{ secrets.SSH_PRIVATE_KEY }}
               script: |
-                chmod +x ~/flutter-me/deploy.sh
-                ~/flutter-me/deploy.sh
+                chmod +x ~/flutter-me/deploy/deploy.sh
+                ~/flutter-me/deploy/deploy.sh
