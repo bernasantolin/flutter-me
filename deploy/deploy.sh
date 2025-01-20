@@ -4,7 +4,7 @@ sudo -i bash <<EOF
 echo "***********************************"
 echo "Navigate to the docker folder"
 echo "***********************************"
-cd /root/deploy/flutter-me
+cd ~/flutter-me/deploy
 
 echo "***********************************"
 echo "Stop the application"
