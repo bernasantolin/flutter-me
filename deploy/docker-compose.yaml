@@ -2,8 +2,6 @@ name: flutter-me
 services:
   app:
     image: antolin0916/flutter-me
-    # env_file:
-    #   - .env
     ports:
       - '4000:3000'
     restart: unless-stopped

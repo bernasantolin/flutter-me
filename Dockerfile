@@ -5,7 +5,7 @@ FROM node:20-alpine AS builder
 WORKDIR /builder
 
 # Copy dependencies files first
-COPY package.json package-lock.json ./ 
+COPY package.json package-lock.json ./
 
 # Install dependencies
 RUN npm install
@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 # Stage 2: Runner stage starts from the nginx:alpine image
-FROM nginx:alpine AS runner 
+FROM nginx:alpine AS runner
 
 # Set the working directory in the container
 WORKDIR /usr/share/nginx/html
@@ -33,7 +33,7 @@ COPY --from=builder /builder/package-lock.json /usr/share/nginx/html/package-loc
 COPY --from=builder /builder/.next/static /usr/share/nginx/html/.next/static
 
 # Copy the Nginx configuration file
-COPY nginx.conf /usr/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/nginx.conf
 
 # Install Node.js in the Nginx container to run the app
 RUN apk add --no-cache nodejs npm
@@ -45,4 +45,4 @@ RUN npm install --prefix /usr/share/nginx/html
 EXPOSE 80 4000
 
 # Start both Nginx and the Next.js app
-CMD ["/bin/sh", "-c", "npm start --prefix /usr/share/nginx/html & nginx -g 'daemon off;'"]
+CMD ["sh", "-c", "npm start --prefix /usr/share/nginx/html & nginx -g 'daemon off;'"]
